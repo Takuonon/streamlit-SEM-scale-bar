@@ -65,6 +65,8 @@ def add_scale_bar(image, magnification):
 st.title("自動スケールバー追加アプリ")
 st.markdown("**本アプリは日立ハイテクの走査電子顕微鏡(Miniscope TM3030Plus)のSEM画像に対応**")
 
+st.markdown("Created by [Takuo Tachibana](https://takuonon.com/)")
+
 uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "png", "jpeg"])
 
 magnification = st.selectbox("SEMの倍率を選択", ["1k", "7k", "10k"])
