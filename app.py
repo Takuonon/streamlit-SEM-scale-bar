@@ -21,6 +21,21 @@ def trim_white_space(image):
     return image[:crop_y, :]
 
 
+def get_font(font_size):
+    """フォントを取得し、存在しない場合はデフォルトフォントにフォールバック"""
+    possible_paths = [
+        "/System/Library/Fonts/Supplemental/Times New Roman.ttf",  # macOS
+        "/usr/share/fonts/truetype/msttcorefonts/times.ttf",  # Linux (MS Core Fonts)
+        "/usr/share/fonts/truetype/msttcorefonts/timesnewroman.ttf",  # Linux (別のパス)
+        "/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman.ttf",  # さらに別の可能性
+        "/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf",  # 代替フォント
+    ]
+    for path in possible_paths:
+        if os.path.exists(path):
+            return ImageFont.truetype(path, font_size)
+    return ImageFont.load_default()
+
+
 def add_scale_bar(image, magnification):
     """指定された倍率に応じたスケールバーを追加"""
     scale_settings = {"1k": (0.19, "30 μm"), "7k": (0.22, "5 μm"), "10k": (0.19, "3 μm")}
@@ -45,18 +60,13 @@ def add_scale_bar(image, magnification):
     text_x = x_start + (scale_bar_length // 2)  # スケールバーの中央に配置
     text_y = y_start - int(font_size * 1.2)  # スケールバーのすぐ上に配置（距離を縮める）
 
-    # μ (マイクロ) を正しく表示するために OpenCV で `putText` ではなく PIL を使用
+    # μ (マイクロ) を正しく表示するために PIL を使用
     pil_image = Image.fromarray(cv2.cvtColor(result, cv2.COLOR_BGR2RGB))
     from PIL import ImageDraw, ImageFont
 
-    font_path = (
-        "/System/Library/Fonts/Supplemental/Times New Roman.ttf"  # Times New Roman フォントを指定（環境に応じて変更）
-    )
-    font = ImageFont.truetype(font_path, font_size)
+    font = get_font(font_size)
     draw = ImageDraw.Draw(pil_image)
-    text_width, text_height = draw.textbbox((0, 0), scale_text, font=font)[
-        2:
-    ]  # `textsize` の代わりに `textbbox` を使用
+    text_width, text_height = draw.textbbox((0, 0), scale_text, font=font)[2:]
     draw.text((text_x - text_width // 2, text_y), scale_text, font=font, fill=(255, 255, 255))
 
     return cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
