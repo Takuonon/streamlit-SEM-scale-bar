@@ -38,7 +38,7 @@ def get_font(font_size):
 
 def add_scale_bar(image, magnification):
     """指定された倍率に応じたスケールバーを追加"""
-    scale_settings = {"1k": (0.19, "30 μm"), "7k": (0.22, "5 μm"), "10k": (0.19, "3 μm")}
+    scale_settings = {"500": (0.19, "60 μm"), "1k": (0.19, "30 μm"), "7k": (0.22, "5 μm"), "10k": (0.19, "3 μm")}
 
     if magnification not in scale_settings:
         return image
