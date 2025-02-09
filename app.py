@@ -79,7 +79,7 @@ st.markdown("Created by [Takuo Tachibana](https://takuonon.com/)")
 
 uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "png", "jpeg"])
 
-magnification = st.selectbox("SEMの倍率を選択", ["1k", "7k", "10k"])
+magnification = st.selectbox("SEMの倍率を選択", ["500", "1k", "7k", "10k"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
