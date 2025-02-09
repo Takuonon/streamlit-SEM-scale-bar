@@ -3,3 +3,4 @@ numpy
 opencv-python-headless
 pytesseract
 pillow
+ttf-mscorefonts-installer
